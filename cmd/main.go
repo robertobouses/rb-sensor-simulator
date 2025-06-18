@@ -8,8 +8,10 @@ import (
 	"github.com/joho/godotenv"
 
 	"github.com/robertobouses/rb-sensor-simulator/internal/domain"
+	"github.com/robertobouses/rb-sensor-simulator/internal/domain/use_cases"
 	"github.com/robertobouses/rb-sensor-simulator/internal/infrastructure/repository"
 	"github.com/robertobouses/rb-sensor-simulator/internal/pkg/postgres"
+	"github.com/robertobouses/rb-sensor-simulator/internal/simulator"
 )
 
 func main() {
@@ -31,6 +33,9 @@ func main() {
 	if err != nil {
 		log.Fatal("failed to init match repository:", err)
 	}
+
+	app := use_cases.NewApp(repo)
+
 	sensor := domain.Sensor{
 		Name: "Sensor 1",
 		Type: domain.TemperatureSensor,
@@ -47,9 +52,27 @@ func main() {
 		},
 	}
 
-	if err := repo.SaveSensor(sensor); err != nil {
+	if err := repo.SaveSensor(&sensor); err != nil {
 		log.Fatal("Failed to save sensor:", err)
 	}
 
 	log.Println("Sensor saved successfully.")
+
+	sensors := []domain.Sensor{sensor}
+
+	sim := simulator.NewSensorSimulator(sensors, func(sensor domain.Sensor, reading domain.SensorReading) {
+		err := app.SaveSensorReading(sensor, reading)
+		if err != nil {
+			log.Printf("Error saving sensor reading: %v", err)
+		} else {
+			log.Printf("Saved reading for sensor %s: %.2f %s", sensor.Name, reading.Value, reading.Error)
+		}
+	})
+
+	sim.Start()
+
+	time.Sleep(1 * time.Minute)
+
+	sim.Stop()
+	log.Println("Simulation stopped.")
 }

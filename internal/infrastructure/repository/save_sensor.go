@@ -7,7 +7,7 @@ import (
 	"github.com/robertobouses/rb-sensor-simulator/internal/domain"
 )
 
-func (r *Repository) SaveSensor(sensor domain.Sensor) error {
+func (r *Repository) SaveSensor(sensor *domain.Sensor) error {
 	var lastTimestamp *time.Time
 	var lastValue *float64
 	var lastError *string
@@ -18,7 +18,7 @@ func (r *Repository) SaveSensor(sensor domain.Sensor) error {
 		lastError = sensor.LastReading.Error
 	}
 
-	_, err := r.saveSensor.Exec(
+	err := r.saveSensor.QueryRow(
 		sensor.Name,
 		string(sensor.Type),
 		int(sensor.Config.SamplingInterval.Seconds()),
@@ -28,7 +28,7 @@ func (r *Repository) SaveSensor(sensor domain.Sensor) error {
 		lastTimestamp,
 		lastValue,
 		lastError,
-	)
+	).Scan(&sensor.ID)
 
 	if err != nil {
 		log.Print("Error executing SaveSensor statement:", err)
