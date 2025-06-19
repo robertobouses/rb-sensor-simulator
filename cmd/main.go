@@ -41,20 +41,21 @@ func main() {
 		Type: domain.TemperatureSensor,
 		Config: domain.SensorConfig{
 			SamplingInterval: 10 * time.Second,
-			AlertThreshold:   30.5,
+			AlertThreshold:   31.5,
 			Unit:             "°C",
 			Enabled:          true,
 		},
 		LastReading: &domain.SensorReading{
 			Timestamp: time.Now(),
-			Value:     25.7,
+			Value:     27.7,
 			Error:     nil,
 		},
 	}
 
-	if err := repo.SaveSensor(&sensor); err != nil {
+	if err := app.SaveSensor(&sensor); err != nil {
 		log.Fatal("Failed to save sensor:", err)
 	}
+	log.Printf("Sensor saved with ID: %v", sensor.ID)
 
 	log.Println("Sensor saved successfully.")
 
