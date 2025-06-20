@@ -2,13 +2,13 @@ package use_cases
 
 import "github.com/robertobouses/rb-sensor-simulator/internal/domain"
 
-func (a *AppService) SaveSensorReading(sensor domain.Sensor, reading domain.SensorReading) error {
-	err := a.repo.SaveSensorReading(sensor.ID, reading)
+func (a *AppService) SaveSensorReading(reading domain.SensorReading) error {
+	err := a.repo.SaveSensorReading(reading)
 	if err != nil {
 		return err
 	}
 
-	err = a.repo.UpdateSensorLastReading(sensor.ID, reading)
+	err = a.repo.UpdateSensorLastReading(reading)
 	if err != nil {
 		return err
 	}

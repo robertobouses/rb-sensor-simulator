@@ -3,18 +3,17 @@ package repository
 import (
 	"log"
 
-	"github.com/google/uuid"
 	"github.com/robertobouses/rb-sensor-simulator/internal/domain"
 )
 
-func (r *Repository) UpdateSensorLastReading(sensorID uuid.UUID, reading domain.SensorReading) error {
+func (r *Repository) UpdateSensorLastReading(reading domain.SensorReading) error {
 	var errMsg *string
 	if reading.Error != nil {
 		errMsg = reading.Error
 	}
 
 	_, err := r.updateSensorLastReading.Exec(
-		sensorID,
+		reading.SensorID,
 		reading.Timestamp,
 		reading.Value,
 		errMsg,

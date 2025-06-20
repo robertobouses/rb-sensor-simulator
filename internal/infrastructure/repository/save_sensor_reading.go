@@ -3,13 +3,12 @@ package repository
 import (
 	"log"
 
-	"github.com/google/uuid"
 	"github.com/robertobouses/rb-sensor-simulator/internal/domain"
 )
 
-func (r *Repository) SaveSensorReading(sensorID uuid.UUID, reading domain.SensorReading) error {
+func (r *Repository) SaveSensorReading(reading domain.SensorReading) error {
 	_, err := r.saveSensorReading.Exec(
-		sensorID,
+		reading.SensorID,
 		reading.Timestamp,
 		reading.Value,
 		reading.Error,
