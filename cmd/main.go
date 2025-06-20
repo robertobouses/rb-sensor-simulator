@@ -37,7 +37,7 @@ func main() {
 
 	repo, err := repository.NewRepository(db)
 	if err != nil {
-		log.Fatal("failed to init match repository:", err)
+		log.Fatal("failed to init repository:", err)
 	}
 
 	app := use_cases.NewApp(repo)

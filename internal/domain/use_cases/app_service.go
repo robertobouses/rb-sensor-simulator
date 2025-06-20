@@ -8,7 +8,7 @@ import (
 type Repository interface {
 	SaveSensor(sensor *domain.Sensor) error
 	SaveSensorReading(reading domain.SensorReading) error
-	UpdateSensorConfig(sensorID uuid.UUID, config domain.SensorConfig) error
+	UpdateSensorConfig(sensor domain.Sensor) error
 	GetSensorConfigAndLastReadings(id uuid.UUID, numberOfReadings int) (*domain.Sensor, error)
 }
 

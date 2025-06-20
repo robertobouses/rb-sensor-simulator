@@ -3,18 +3,16 @@ package repository
 import (
 	"log"
 
-	"github.com/google/uuid"
 	"github.com/robertobouses/rb-sensor-simulator/internal/domain"
 )
 
-func (r *Repository) UpdateSensorConfig(sensorID uuid.UUID, config domain.SensorConfig) error {
-
+func (r *Repository) UpdateSensorConfig(sensor domain.Sensor) error {
 	_, err := r.updateSensorConfig.Exec(
-		int(config.SamplingInterval.Milliseconds()),
-		config.AlertThreshold,
-		config.Unit,
-		config.Enabled,
-		sensorID,
+		int(sensor.SamplingInterval.Milliseconds()),
+		sensor.AlertThresholds.Min,
+		sensor.AlertThresholds.Max,
+		sensor.Unit,
+		sensor.ID,
 	)
 
 	if err != nil {

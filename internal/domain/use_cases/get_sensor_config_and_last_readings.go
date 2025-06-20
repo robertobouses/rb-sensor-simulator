@@ -5,18 +5,19 @@ import (
 	"github.com/robertobouses/rb-sensor-simulator/internal/domain"
 )
 
-func (a *AppService) GetSensorConfigAndLastReadings(sensorID uuid.UUID, numberOfReadings int) (*domain.SensorStatus, error) {
+func (a *AppService) GetSensorConfigAndLastReadings(sensorID uuid.UUID, numberOfReadings int) (*domain.Sensor, error) {
 	sensor, err := a.repo.GetSensorConfigAndLastReadings(sensorID, numberOfReadings)
 	if err != nil {
 		return nil, err
 	}
 
-	return &domain.SensorStatus{
-		SensorID:         sensor.ID,
-		SamplingInterval: sensor.Config.SamplingInterval,
-		AlertThreshold:   sensor.Config.AlertThreshold,
-		Unit:             sensor.Config.Unit,
-		Enabled:          sensor.Config.Enabled,
+	return &domain.Sensor{
+		ID:               sensor.ID,
+		Name:             sensor.Name,
+		Type:             sensor.Type,
+		SamplingInterval: sensor.SamplingInterval,
+		AlertThresholds:  sensor.AlertThresholds,
+		Unit:             sensor.Unit,
 		LastReading:      sensor.LastReading,
 	}, nil
 }

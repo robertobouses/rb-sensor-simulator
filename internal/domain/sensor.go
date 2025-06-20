@@ -1,6 +1,10 @@
 package domain
 
-import "github.com/google/uuid"
+import (
+	"time"
+
+	"github.com/google/uuid"
+)
 
 type SensorType string
 
@@ -11,9 +15,16 @@ const (
 )
 
 type Sensor struct {
-	ID          uuid.UUID
-	Name        string
-	Type        SensorType
-	Config      SensorConfig
-	LastReading *[]SensorReading
+	ID               uuid.UUID
+	Name             string
+	Type             SensorType
+	SamplingInterval time.Duration
+	AlertThresholds  Threshold
+	Unit             string
+	LastReading      *[]SensorReading
+}
+
+type Threshold struct {
+	Min float64
+	Max float64
 }

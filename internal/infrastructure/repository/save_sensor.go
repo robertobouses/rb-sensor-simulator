@@ -11,10 +11,10 @@ func (r *Repository) SaveSensor(sensor *domain.Sensor) error {
 	err := r.saveSensor.QueryRow(
 		sensor.Name,
 		string(sensor.Type),
-		int(sensor.Config.SamplingInterval.Seconds()),
-		sensor.Config.AlertThreshold,
-		sensor.Config.Unit,
-		sensor.Config.Enabled,
+		int(sensor.SamplingInterval.Seconds()),
+		sensor.AlertThresholds.Min,
+		sensor.AlertThresholds.Max,
+		sensor.Unit,
 	).Scan(&sensor.ID)
 
 	if err != nil {

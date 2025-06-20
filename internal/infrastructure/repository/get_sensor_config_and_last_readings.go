@@ -13,10 +13,10 @@ func (r *Repository) GetSensorConfigAndLastReadings(id uuid.UUID, numberOfReadin
 		&sensor.ID,
 		&sensor.Name,
 		&sensor.Type,
-		&sensor.Config.SamplingInterval,
-		&sensor.Config.AlertThreshold,
-		&sensor.Config.Unit,
-		&sensor.Config.Enabled,
+		&sensor.SamplingInterval,
+		&sensor.AlertThresholds.Min,
+		&sensor.AlertThresholds.Max,
+		&sensor.Unit,
 	)
 	if err != nil {
 		return nil, err
