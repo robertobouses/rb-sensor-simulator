@@ -10,6 +10,7 @@ type Repository interface {
 	SaveSensorReading(reading domain.SensorReading) error
 	UpdateSensorConfig(sensor domain.Sensor) error
 	GetSensorConfigAndLastReadings(id uuid.UUID, numberOfReadings int) (*domain.Sensor, error)
+	GetSensorByID(id uuid.UUID) (*domain.Sensor, error)
 }
 
 func NewApp(repository Repository) AppService {

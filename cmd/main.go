@@ -42,7 +42,7 @@ func main() {
 
 	app := use_cases.NewApp(repo)
 
-	handler := natsx.NewHandler(app)
+	handler := natsx.NewHandler(&app)
 
 	nc.Subscribe("sensor.reading", handler.ProcessSensorReading)
 

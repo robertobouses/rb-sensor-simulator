@@ -5,5 +5,4 @@ INSERT INTO sen.sensor (
     alert_threshold_min,
     alert_threshold_max,
     unit
-) VALUES ($1, $2, $3, $4, $5, $6)
-RETURNING id;
+) VALUES ($1, $2, $3, $4, $5, $6);

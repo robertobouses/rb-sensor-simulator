@@ -9,7 +9,7 @@ import (
 	"github.com/robertobouses/rb-sensor-simulator/internal/domain"
 )
 
-func (h *Handler) ProcessSensorReading(msg *nats.Msg) {
+func (h Handler) ProcessSensorReading(msg *nats.Msg) {
 	var eventSensorReading EventSensorReading
 	err := json.Unmarshal(msg.Data, &eventSensorReading)
 	if err != nil {

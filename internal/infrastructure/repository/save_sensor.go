@@ -8,14 +8,14 @@ import (
 
 func (r *Repository) SaveSensor(sensor *domain.Sensor) error {
 
-	err := r.saveSensor.QueryRow(
+	_, err := r.saveSensor.Exec(
 		sensor.Name,
 		string(sensor.Type),
 		int(sensor.SamplingInterval.Seconds()),
 		sensor.AlertThresholds.Min,
 		sensor.AlertThresholds.Max,
 		sensor.Unit,
-	).Scan(&sensor.ID)
+	)
 
 	if err != nil {
 		log.Print("Error executing SaveSensor statement:", err)
