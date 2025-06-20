@@ -14,5 +14,13 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  nats:
+    image: nats:latest
+    container_name: sensor-nats
+    restart: always
+    ports:
+      - "4222:4222"
+    command: -p 4222
+
 volumes:
   pgdata:

@@ -15,6 +15,12 @@ var saveSensorReadingQuery string
 //go:embed sql/update_sensor_last_reading.sql
 var updateSensorLastReadingQuery string
 
+//go:embed sql/update_sensor_config.sql
+var updateSensorConfigQuery string
+
+//go:embed sql/get_sensor_by_id.sql
+var getSensorByIDQuery string
+
 func NewRepository(db *sql.DB) (*Repository, error) {
 	saveSensorStmt, err := db.Prepare(saveSensorQuery)
 	if err != nil {
@@ -28,12 +34,22 @@ func NewRepository(db *sql.DB) (*Repository, error) {
 	if err != nil {
 		return nil, err
 	}
+	updateSensorConfigStmt, err := db.Prepare(updateSensorConfigQuery)
+	if err != nil {
+		return nil, err
+	}
+	getSensorByIDStmt, err := db.Prepare(getSensorByIDQuery)
+	if err != nil {
+		return nil, err
+	}
 
 	return &Repository{
 		db:                      db,
 		saveSensor:              saveSensorStmt,
 		saveSensorReading:       saveSensorReadingStmt,
 		updateSensorLastReading: updateSensorLastReadingStmt,
+		updateSensorConfig:      updateSensorConfigStmt,
+		getSensorByID:           getSensorByIDStmt,
 	}, nil
 }
 
@@ -42,4 +58,6 @@ type Repository struct {
 	saveSensor              *sql.Stmt
 	saveSensorReading       *sql.Stmt
 	updateSensorLastReading *sql.Stmt
+	updateSensorConfig      *sql.Stmt
+	getSensorByID           *sql.Stmt
 }
