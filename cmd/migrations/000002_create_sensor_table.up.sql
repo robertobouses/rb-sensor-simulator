@@ -6,9 +6,6 @@ CREATE TABLE IF NOT EXISTS sen.sensor (
     sampling_interval INTEGER NOT NULL,
     alert_threshold REAL NOT NULL,
     unit TEXT NOT NULL,
-    enabled BOOLEAN NOT NULL,
-    last_reading_timestamp TIMESTAMPTZ,
-    last_reading_value REAL,
-    last_reading_error TEXT
+    enabled BOOLEAN NOT NULL
 );
 COMMIT;

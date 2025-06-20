@@ -5,8 +5,5 @@ SELECT
     sampling_interval,
     alert_threshold,
     unit,
-    enabled,
-    last_reading_timestamp,
-    last_reading_value,
-    last_reading_error
+    enabled
 FROM sen.sensor WHERE id = $1

@@ -15,5 +15,5 @@ type Sensor struct {
 	Name        string
 	Type        SensorType
 	Config      SensorConfig
-	LastReading *SensorReading
+	LastReading *[]SensorReading
 }

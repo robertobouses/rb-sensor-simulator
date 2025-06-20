@@ -8,9 +8,8 @@ import (
 type Repository interface {
 	SaveSensor(sensor *domain.Sensor) error
 	SaveSensorReading(reading domain.SensorReading) error
-	UpdateSensorLastReading(reading domain.SensorReading) error
 	UpdateSensorConfig(sensorID uuid.UUID, config domain.SensorConfig) error
-	GetSensorByID(id uuid.UUID) (*domain.Sensor, error)
+	GetSensorConfigAndLastReadings(id uuid.UUID, numberOfReadings int) (*domain.Sensor, error)
 }
 
 func NewApp(repository Repository) AppService {

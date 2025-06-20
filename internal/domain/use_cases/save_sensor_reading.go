@@ -8,9 +8,5 @@ func (a *AppService) SaveSensorReading(reading domain.SensorReading) error {
 		return err
 	}
 
-	err = a.repo.UpdateSensorLastReading(reading)
-	if err != nil {
-		return err
-	}
 	return nil
 }

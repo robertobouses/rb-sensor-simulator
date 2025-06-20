@@ -12,14 +12,14 @@ var saveSensorQuery string
 //go:embed sql/save_sensor_reading.sql
 var saveSensorReadingQuery string
 
-//go:embed sql/update_sensor_last_reading.sql
-var updateSensorLastReadingQuery string
-
 //go:embed sql/update_sensor_config.sql
 var updateSensorConfigQuery string
 
 //go:embed sql/get_sensor_by_id.sql
 var getSensorByIDQuery string
+
+//go:embed sql/get_sensor_last_readings_by_id.sql
+var getSensorLastReadingsByIDQuery string
 
 func NewRepository(db *sql.DB) (*Repository, error) {
 	saveSensorStmt, err := db.Prepare(saveSensorQuery)
@@ -27,10 +27,6 @@ func NewRepository(db *sql.DB) (*Repository, error) {
 		return nil, err
 	}
 	saveSensorReadingStmt, err := db.Prepare(saveSensorReadingQuery)
-	if err != nil {
-		return nil, err
-	}
-	updateSensorLastReadingStmt, err := db.Prepare(updateSensorLastReadingQuery)
 	if err != nil {
 		return nil, err
 	}
@@ -42,22 +38,26 @@ func NewRepository(db *sql.DB) (*Repository, error) {
 	if err != nil {
 		return nil, err
 	}
+	getSensorLastReadingsByIDStmt, err := db.Prepare(getSensorLastReadingsByIDQuery)
+	if err != nil {
+		return nil, err
+	}
 
 	return &Repository{
-		db:                      db,
-		saveSensor:              saveSensorStmt,
-		saveSensorReading:       saveSensorReadingStmt,
-		updateSensorLastReading: updateSensorLastReadingStmt,
-		updateSensorConfig:      updateSensorConfigStmt,
-		getSensorByID:           getSensorByIDStmt,
+		db:                        db,
+		saveSensor:                saveSensorStmt,
+		saveSensorReading:         saveSensorReadingStmt,
+		updateSensorConfig:        updateSensorConfigStmt,
+		getSensorByID:             getSensorByIDStmt,
+		getSensorLastReadingsByID: getSensorLastReadingsByIDStmt,
 	}, nil
 }
 
 type Repository struct {
-	db                      *sql.DB
-	saveSensor              *sql.Stmt
-	saveSensorReading       *sql.Stmt
-	updateSensorLastReading *sql.Stmt
-	updateSensorConfig      *sql.Stmt
-	getSensorByID           *sql.Stmt
+	db                        *sql.DB
+	saveSensor                *sql.Stmt
+	saveSensorReading         *sql.Stmt
+	updateSensorConfig        *sql.Stmt
+	getSensorByID             *sql.Stmt
+	getSensorLastReadingsByID *sql.Stmt
 }

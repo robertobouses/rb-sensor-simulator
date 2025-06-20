@@ -2,21 +2,11 @@ package repository
 
 import (
 	"log"
-	"time"
 
 	"github.com/robertobouses/rb-sensor-simulator/internal/domain"
 )
 
 func (r *Repository) SaveSensor(sensor *domain.Sensor) error {
-	var lastTimestamp *time.Time
-	var lastValue *float64
-	var lastError *string
-
-	if sensor.LastReading != nil {
-		lastTimestamp = &sensor.LastReading.Timestamp
-		lastValue = &sensor.LastReading.Value
-		lastError = sensor.LastReading.Error
-	}
 
 	err := r.saveSensor.QueryRow(
 		sensor.Name,
@@ -25,9 +15,6 @@ func (r *Repository) SaveSensor(sensor *domain.Sensor) error {
 		sensor.Config.AlertThreshold,
 		sensor.Config.Unit,
 		sensor.Config.Enabled,
-		lastTimestamp,
-		lastValue,
-		lastError,
 	).Scan(&sensor.ID)
 
 	if err != nil {
