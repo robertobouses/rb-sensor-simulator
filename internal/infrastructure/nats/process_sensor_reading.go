@@ -35,7 +35,7 @@ func (h Handler) ProcessSensorReading(msg *nats.Msg) {
 		Error:     eventSensorReading.Error,
 	}
 
-	if err := h.app.SaveSensorReading(sensorReading); err != nil {
+	if err := h.app.SaveSensorReading(&sensorReading); err != nil {
 		fmt.Printf("error saving sensor reading: %v\n", err)
 	}
 }
