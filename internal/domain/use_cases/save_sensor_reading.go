@@ -1,16 +1,26 @@
 package use_cases
 
-import "github.com/robertobouses/rb-sensor-simulator/internal/domain"
+import (
+	"errors"
 
-func (a *AppService) SaveSensorReading(reading domain.SensorReading) error {
-	err := a.repo.SaveSensorReading(reading)
+	"github.com/robertobouses/rb-sensor-simulator/internal/domain"
+)
+
+func (a AppService) SaveSensorReading(reading domain.SensorReading) error {
+
+	comparableSensor, err := a.repo.GetSensorByID(reading.SensorID)
+
 	if err != nil {
-		return err
+		return errors.New("failed to get sensor for reading: " + err.Error())
 	}
 
-	err = a.repo.UpdateSensorLastReading(reading)
-	if err != nil {
-		return err
+	if reading.Value < comparableSensor.AlertThresholds.Min {
+		alert := "Alert Value Min"
+		reading.Error = &alert
+	} else if reading.Value > comparableSensor.AlertThresholds.Max {
+		alert := "Alert Value Max"
+		reading.Error = &alert
 	}
-	return nil
+
+	return a.repo.SaveSensorReading(reading)
 }

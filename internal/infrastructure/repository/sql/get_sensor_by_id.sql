@@ -3,10 +3,7 @@ SELECT
     name,
     type,
     sampling_interval,
-    alert_threshold,
-    unit,
-    enabled,
-    last_reading_timestamp,
-    last_reading_value,
-    last_reading_error
+    alert_threshold_min,
+    alert_threshold_max,
+    unit
 FROM sen.sensor WHERE id = $1
