@@ -18,6 +18,8 @@ type CreateSensorRequest struct {
 	SamplingInterval time.Duration `json:"sampling_interval"`
 	AlertThresholds  Threshold     `json:"alert_thresholds"`
 	Unit             string        `json:"unit"`
+	Error            *string       `json:"error,omitempty"`
+	Status           string        `json:"status"`
 }
 type Threshold struct {
 	Min float64 `json:"min"`
@@ -42,7 +44,9 @@ func (h Handler) CreateSensor(req micro.Request) {
 			Min: input.AlertThresholds.Min,
 			Max: input.AlertThresholds.Max,
 		},
-		Unit: input.Unit,
+		Unit:   input.Unit,
+		Error:  input.Error,
+		Status: domain.SensorStatus(input.Status),
 	}
 
 	if err := h.app.SaveSensor(&sensor); err != nil {

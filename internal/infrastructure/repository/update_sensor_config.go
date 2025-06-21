@@ -12,6 +12,8 @@ func (r *Repository) UpdateSensorConfig(sensor domain.Sensor) error {
 		sensor.AlertThresholds.Min,
 		sensor.AlertThresholds.Max,
 		sensor.Unit,
+		sensor.Error,
+		sensor.Status,
 		sensor.ID,
 	)
 

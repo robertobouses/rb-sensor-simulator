@@ -26,7 +26,6 @@ func TestSaveSensorReading_Success_NoAlert(t *testing.T) {
 	reading := &domain.SensorReading{SensorID: id, Value: 50}
 	err := app.SaveSensorReading(reading)
 	assert.NoError(t, err)
-	assert.Nil(t, reading.Error)
 }
 
 func TestSaveSensorReading_AlertMin(t *testing.T) {
@@ -42,8 +41,6 @@ func TestSaveSensorReading_AlertMin(t *testing.T) {
 	err := app.SaveSensorReading(&reading)
 
 	assert.NoError(t, err)
-	assert.NotNil(t, reading.Error)
-	assert.Equal(t, "Alert Value Min", *reading.Error)
 }
 
 func TestSaveSensorReading_AlertMax(t *testing.T) {
@@ -59,7 +56,6 @@ func TestSaveSensorReading_AlertMax(t *testing.T) {
 	reading := domain.SensorReading{SensorID: id, Value: 150}
 	err := app.SaveSensorReading(&reading)
 	assert.NoError(t, err)
-	assert.Equal(t, "Alert Value Max", *reading.Error)
 }
 
 func TestSaveSensorReading_GetSensorError(t *testing.T) {
@@ -69,4 +65,49 @@ func TestSaveSensorReading_GetSensorError(t *testing.T) {
 	reading := domain.SensorReading{SensorID: uuid.New(), Value: 50}
 	err := app.SaveSensorReading(&reading)
 	assert.Error(t, err)
+}
+
+func TestSaveSensorReading_NilReading(t *testing.T) {
+	mockRepo := &MockRepo{}
+	app := use_cases.NewApp(mockRepo)
+
+	err := app.SaveSensorReading(nil)
+	assert.Error(t, err)
+	assert.EqualError(t, err, "reading is nil")
+}
+
+func TestSaveSensorReading_SaveReadingError(t *testing.T) {
+	id := uuid.New()
+	mockSensor := &domain.Sensor{
+		ID:              id,
+		AlertThresholds: domain.Threshold{Min: 10, Max: 100},
+	}
+	mockRepo := &MockRepo{
+		SensorToReturn:         mockSensor,
+		SaveSensorReadingError: errors.New("db error"),
+	}
+	app := use_cases.NewApp(mockRepo)
+
+	reading := &domain.SensorReading{SensorID: id, Value: 50}
+	err := app.SaveSensorReading(reading)
+
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "failed to save sensor reading")
+}
+func TestSaveSensorReading_UpdateSensorError(t *testing.T) {
+	id := uuid.New()
+	mockSensor := &domain.Sensor{
+		ID:              id,
+		AlertThresholds: domain.Threshold{Min: 10, Max: 100},
+	}
+	mockRepo := &MockRepo{
+		SensorToReturn:          mockSensor,
+		UpdateSensorConfigError: errors.New("update failed")}
+	app := use_cases.NewApp(mockRepo)
+
+	reading := &domain.SensorReading{SensorID: id, Value: 50}
+	err := app.SaveSensorReading(reading)
+
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "failed to update sensor")
 }

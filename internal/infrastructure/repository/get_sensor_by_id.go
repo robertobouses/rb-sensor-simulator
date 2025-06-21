@@ -17,6 +17,8 @@ func (r *Repository) GetSensorByID(id uuid.UUID) (*domain.Sensor, error) {
 		&sensor.AlertThresholds.Min,
 		&sensor.AlertThresholds.Max,
 		&sensor.Unit,
+		&sensor.Error,
+		&sensor.Status,
 	)
 	if err != nil {
 		return nil, err

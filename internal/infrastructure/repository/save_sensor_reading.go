@@ -11,7 +11,6 @@ func (r *Repository) SaveSensorReading(reading domain.SensorReading) error {
 		reading.SensorID,
 		reading.Timestamp,
 		reading.Value,
-		reading.Error,
 	)
 
 	if err != nil {

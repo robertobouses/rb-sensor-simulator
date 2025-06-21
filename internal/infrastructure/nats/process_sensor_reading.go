@@ -32,10 +32,15 @@ func (h Handler) ProcessSensorReading(msg *nats.Msg) {
 		SensorID:  sensorID,
 		Timestamp: eventSensorReading.Timestamp,
 		Value:     eventSensorReading.Value,
-		Error:     eventSensorReading.Error,
 	}
 
+	sensor := domain.Sensor{
+		Error: eventSensorReading.Error,
+	}
 	if err := h.app.SaveSensorReading(&sensorReading); err != nil {
 		fmt.Printf("error saving sensor reading: %v\n", err)
+	}
+	if err := h.app.UpdateSensorConfig(sensor); err != nil {
+		fmt.Printf("error updating sensor config: %v\n", err)
 	}
 }

@@ -17,6 +17,8 @@ func (r *Repository) GetSensorConfigAndLastReadings(id uuid.UUID, numberOfReadin
 		&sensor.AlertThresholds.Min,
 		&sensor.AlertThresholds.Max,
 		&sensor.Unit,
+		&sensor.Error,
+		&sensor.Status,
 	)
 	if err != nil {
 		return nil, err
@@ -34,8 +36,7 @@ func (r *Repository) GetSensorConfigAndLastReadings(id uuid.UUID, numberOfReadin
 		reading.SensorID = id
 		err := rows.Scan(
 			&reading.Timestamp,
-			&reading.Value,
-			&reading.Error)
+			&reading.Value)
 		if err != nil {
 			return nil, err
 		}

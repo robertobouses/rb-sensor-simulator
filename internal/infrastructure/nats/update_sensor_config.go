@@ -33,7 +33,9 @@ func (h Handler) UpdateSensorConfig(req micro.Request) {
 			Min: input.AlertThresholds.Min,
 			Max: input.AlertThresholds.Max,
 		},
-		Unit: input.Unit,
+		Unit:   input.Unit,
+		Error:  input.Error,
+		Status: domain.SensorStatus(input.Status),
 	}
 
 	if err := h.app.UpdateSensorConfig(sensor); err != nil {

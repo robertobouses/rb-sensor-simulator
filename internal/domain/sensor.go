@@ -14,6 +14,13 @@ const (
 	PressureSensor    SensorType = "pressure"
 )
 
+type SensorStatus string
+
+const (
+	Active  SensorStatus = "active"
+	Warning SensorStatus = "warning"
+)
+
 type Sensor struct {
 	ID               uuid.UUID
 	Name             string
@@ -21,6 +28,8 @@ type Sensor struct {
 	SamplingInterval time.Duration
 	AlertThresholds  Threshold
 	Unit             string
+	Error            *string
+	Status           SensorStatus
 	LastReading      *[]SensorReading
 }
 

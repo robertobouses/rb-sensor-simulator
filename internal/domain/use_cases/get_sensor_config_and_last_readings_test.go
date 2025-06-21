@@ -23,6 +23,8 @@ func TestGetSensorConfigAndLastReadings_Success(t *testing.T) {
 		SamplingInterval: time.Second * 5,
 		AlertThresholds:  domain.Threshold{Min: 0, Max: 100},
 		Unit:             "C",
+		Error:            nil,
+		Status:           domain.Active,
 		LastReading:      &readings,
 	}
 	mockRepo := &MockRepo{SensorToReturn: mockSensor}

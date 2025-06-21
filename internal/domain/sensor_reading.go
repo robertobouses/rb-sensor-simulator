@@ -10,5 +10,4 @@ type SensorReading struct {
 	SensorID  uuid.UUID
 	Timestamp time.Time
 	Value     float64
-	Error     *string
 }

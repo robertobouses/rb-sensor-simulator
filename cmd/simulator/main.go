@@ -40,9 +40,9 @@ func getRandomSensorType() domain.SensorType {
 
 func getRandomSensorID() string {
 	sensorIDs := []string{
-		"1e5c6ed1-2519-4f2b-bee9-8ef65b95a3bb",
-		"3ab25c01-865b-4207-a524-8d9ec3df886a",
-		"fffeb837-d07e-4c7d-9248-71d354f2b2ea",
+		"43f0e336-c080-4c9a-ab90-54542597a77b",
+		"d05d1a40-67e7-4f69-b107-c3f1fdfae974",
+		"b7515b94-2edb-445e-94a8-d16747144966",
 	}
 	return sensorIDs[rand.Intn(len(sensorIDs))]
 }
