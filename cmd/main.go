@@ -42,9 +42,10 @@ func main() {
 
 	app := use_cases.NewApp(repo)
 
-	handler := natsx.NewHandler(&app)
-
-	nc.Subscribe("sensor.reading", handler.ProcessSensorReading)
-
+	err = natsx.RunServer(nc, app)
+	if err != nil {
+		log.Fatal(err)
+	}
+	log.Println("running nats api")
 	select {}
 }

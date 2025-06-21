@@ -6,7 +6,7 @@ import (
 	"github.com/robertobouses/rb-sensor-simulator/internal/domain"
 )
 
-func (a *AppService) SaveSensorReading(reading domain.SensorReading) error {
+func (a AppService) SaveSensorReading(reading domain.SensorReading) error {
 
 	comparableSensor, err := a.repo.GetSensorByID(reading.SensorID)
 

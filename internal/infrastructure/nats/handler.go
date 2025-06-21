@@ -1,11 +1,15 @@
 package nats
 
-import "github.com/robertobouses/rb-sensor-simulator/internal/domain"
+import (
+	"github.com/google/uuid"
+	"github.com/robertobouses/rb-sensor-simulator/internal/domain"
+)
 
 type App interface {
 	SaveSensor(sensor *domain.Sensor) error
 	SaveSensorReading(reading domain.SensorReading) error
 	UpdateSensorConfig(sensor domain.Sensor) error
+	GetSensorConfigAndLastReadings(sensorID uuid.UUID, numberOfReadings int) (*domain.Sensor, error)
 }
 
 func NewHandler(app App) Handler {

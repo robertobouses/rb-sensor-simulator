@@ -5,7 +5,7 @@ import (
 	"github.com/robertobouses/rb-sensor-simulator/internal/domain"
 )
 
-func (a *AppService) GetSensorConfigAndLastReadings(sensorID uuid.UUID, numberOfReadings int) (*domain.Sensor, error) {
+func (a AppService) GetSensorConfigAndLastReadings(sensorID uuid.UUID, numberOfReadings int) (*domain.Sensor, error) {
 	sensor, err := a.repo.GetSensorConfigAndLastReadings(sensorID, numberOfReadings)
 	if err != nil {
 		return nil, err
