@@ -3,11 +3,19 @@ package nats
 import (
 	"encoding/json"
 	"fmt"
+	"time"
 
 	"github.com/google/uuid"
 	"github.com/nats-io/nats.go"
 	"github.com/robertobouses/rb-sensor-simulator/internal/domain"
 )
+
+type EventSensorReading struct {
+	SensorID  string    `json:"sensor_id"`
+	Timestamp time.Time `json:"timestamp"`
+	Value     float64   `json:"value"`
+	Error     *string   `json:"error,omitempty"`
+}
 
 func (h Handler) ProcessSensorReading(msg *nats.Msg) {
 	var eventSensorReading EventSensorReading
