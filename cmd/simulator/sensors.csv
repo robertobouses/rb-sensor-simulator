@@ -1,2 +1,5 @@
-type, unit, number, min, max, sampling
-temperature, C, 1, 0, 100, 5s
+type, unit, number_of_sensors, alert_thresholds_min, alert_thresholds_max, sampling_interval
+temperature, C, 2, 0, 100, 5s
+temperature, C, 5, -10, 70, 10s
+humidity, %, 7, 30, 50, 500ms
+pressure, hPa, 4, 900, 1100, 6000ms
