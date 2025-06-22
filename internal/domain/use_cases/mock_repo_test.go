@@ -15,6 +15,7 @@ type MockRepo struct {
 	SaveSensorReadingError     error
 	SaveAlertError             error
 	UpdateAlertResolvedError   error
+	GetSensorByIDError         error
 }
 
 func (m *MockRepo) SaveSensor(sensor *domain.Sensor) error {
