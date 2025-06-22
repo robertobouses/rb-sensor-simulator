@@ -14,7 +14,7 @@ func TestSaveSensor_Success(t *testing.T) {
 	mockRepo := &MockRepo{SaveSensorError: nil}
 	app := use_cases.NewApp(mockRepo)
 
-	err := app.SaveSensor(&domain.Sensor{ID: uuid.New()})
+	err := app.CreateSensor(&domain.Sensor{ID: uuid.New()})
 	assert.NoError(t, err)
 }
 
@@ -22,6 +22,6 @@ func TestSaveSensor_Error(t *testing.T) {
 	mockRepo := &MockRepo{SaveSensorError: errors.New("db error")}
 	app := use_cases.NewApp(mockRepo)
 
-	err := app.SaveSensor(&domain.Sensor{ID: uuid.New()})
+	err := app.CreateSensor(&domain.Sensor{ID: uuid.New()})
 	assert.Error(t, err)
 }

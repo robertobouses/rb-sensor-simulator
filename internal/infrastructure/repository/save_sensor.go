@@ -9,13 +9,13 @@ import (
 func (r *Repository) SaveSensor(sensor *domain.Sensor) error {
 
 	_, err := r.saveSensor.Exec(
+		sensor.ID.String(),
 		sensor.Name,
 		string(sensor.Type),
 		int(sensor.SamplingInterval.Seconds()),
 		sensor.AlertThresholds.Min,
 		sensor.AlertThresholds.Max,
 		sensor.Unit,
-		sensor.Error,
 		sensor.Status,
 	)
 

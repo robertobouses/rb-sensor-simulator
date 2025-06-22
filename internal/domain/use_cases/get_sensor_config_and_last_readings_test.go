@@ -23,7 +23,6 @@ func TestGetSensorConfigAndLastReadings_Success(t *testing.T) {
 		SamplingInterval: time.Second * 5,
 		AlertThresholds:  domain.Threshold{Min: 0, Max: 100},
 		Unit:             "C",
-		Error:            nil,
 		Status:           domain.Active,
 		LastReading:      &readings,
 	}
@@ -31,9 +30,16 @@ func TestGetSensorConfigAndLastReadings_Success(t *testing.T) {
 	app := use_cases.NewApp(mockRepo)
 
 	result, err := app.GetSensorConfigAndLastReadings(id, 1)
-	assert.NoError(t, err)
-	assert.Equal(t, mockSensor, result)
 
+	assert.NoError(t, err)
+	assert.Equal(t, mockSensor.ID, result.ID)
+	assert.Equal(t, mockSensor.Name, result.Name)
+	assert.Equal(t, mockSensor.Type, result.Type)
+	assert.Equal(t, mockSensor.SamplingInterval, result.SamplingInterval)
+	assert.Equal(t, mockSensor.AlertThresholds, result.AlertThresholds)
+	assert.Equal(t, mockSensor.Unit, result.Unit)
+	assert.Equal(t, mockSensor.Status, result.Status)
+	assert.Equal(t, mockSensor.LastReading, result.LastReading)
 }
 
 func TestGetSensorConfigAndLastReadings_Error(t *testing.T) {

@@ -99,13 +99,14 @@ func TestSaveSensorReading_UpdateSensorError(t *testing.T) {
 	mockSensor := &domain.Sensor{
 		ID:              id,
 		AlertThresholds: domain.Threshold{Min: 10, Max: 100},
+		Status:          domain.Active,
 	}
 	mockRepo := &MockRepo{
 		SensorToReturn:          mockSensor,
 		UpdateSensorConfigError: errors.New("update failed")}
 	app := use_cases.NewApp(mockRepo)
 
-	reading := &domain.SensorReading{SensorID: id, Value: 50}
+	reading := &domain.SensorReading{SensorID: id, Value: 110}
 	err := app.SaveSensorReading(reading)
 
 	assert.Error(t, err)

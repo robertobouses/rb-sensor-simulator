@@ -28,7 +28,6 @@ type Sensor struct {
 	SamplingInterval time.Duration
 	AlertThresholds  Threshold
 	Unit             string
-	Error            *string
 	Status           SensorStatus
 	LastReading      *[]SensorReading
 }

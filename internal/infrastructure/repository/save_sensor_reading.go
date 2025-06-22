@@ -8,9 +8,11 @@ import (
 
 func (r *Repository) SaveSensorReading(reading domain.SensorReading) error {
 	_, err := r.saveSensorReading.Exec(
+		reading.ID,
 		reading.SensorID,
 		reading.Timestamp,
 		reading.Value,
+		reading.Error,
 	)
 
 	if err != nil {

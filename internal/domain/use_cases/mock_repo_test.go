@@ -13,6 +13,8 @@ type MockRepo struct {
 	UpdateSensorConfigError    error
 	SaveReadingErrorToReturn   error
 	SaveSensorReadingError     error
+	SaveAlertError             error
+	UpdateAlertResolvedError   error
 }
 
 func (m *MockRepo) SaveSensor(sensor *domain.Sensor) error {
@@ -33,4 +35,12 @@ func (m *MockRepo) GetSensorConfigAndLastReadings(id uuid.UUID, numberOfReadings
 
 func (m *MockRepo) GetSensorByID(id uuid.UUID) (*domain.Sensor, error) {
 	return m.SensorToReturn, m.SensorErrorToReturn
+}
+
+func (m *MockRepo) SaveAlert(alert domain.AlertHistorial) error {
+	return m.SaveAlertError
+}
+
+func (m *MockRepo) UpdateAlertResolved(sensorID, resolvedReadingID uuid.UUID) error {
+	return m.UpdateAlertResolvedError
 }

@@ -2,5 +2,6 @@ INSERT INTO sen.sensor_reading (
     id,
     sensor_id,
     timestamp,
-    value
-)VALUES (gen_random_uuid(), $1, $2, $3);
+    value,
+    error
+)VALUES ($1, $2, $3, $4, $5);

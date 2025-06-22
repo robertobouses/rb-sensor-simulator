@@ -21,6 +21,12 @@ var getSensorByIDQuery string
 //go:embed sql/get_sensor_last_readings_by_id.sql
 var getSensorLastReadingsByIDQuery string
 
+//go:embed sql/save_alert.sql
+var saveAlertQuery string
+
+//go:embed sql/update_alert_resolved.sql
+var updateAlertResolvedQuery string
+
 func NewRepository(db *sql.DB) (*Repository, error) {
 	saveSensorStmt, err := db.Prepare(saveSensorQuery)
 	if err != nil {
@@ -42,6 +48,14 @@ func NewRepository(db *sql.DB) (*Repository, error) {
 	if err != nil {
 		return nil, err
 	}
+	saveAlertStmt, err := db.Prepare(saveAlertQuery)
+	if err != nil {
+		return nil, err
+	}
+	updateAlertResolvedStmt, err := db.Prepare(updateAlertResolvedQuery)
+	if err != nil {
+		return nil, err
+	}
 
 	return &Repository{
 		db:                        db,
@@ -50,6 +64,8 @@ func NewRepository(db *sql.DB) (*Repository, error) {
 		updateSensorConfig:        updateSensorConfigStmt,
 		getSensorByID:             getSensorByIDStmt,
 		getSensorLastReadingsByID: getSensorLastReadingsByIDStmt,
+		saveAlert:                 saveAlertStmt,
+		updateAlertResolved:       updateAlertResolvedStmt,
 	}, nil
 }
 
@@ -60,4 +76,6 @@ type Repository struct {
 	updateSensorConfig        *sql.Stmt
 	getSensorByID             *sql.Stmt
 	getSensorLastReadingsByID *sql.Stmt
+	saveAlert                 *sql.Stmt
+	updateAlertResolved       *sql.Stmt
 }
