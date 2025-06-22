@@ -19,12 +19,12 @@ import (
 )
 
 const (
-	typeIndex     = 0
-	unitIndex     = 1
-	numberIndex   = 2
-	minIndex      = 3
-	maxIndex      = 4
-	samplingIndex = 5
+	type_Index                 = 0
+	unit_Index                 = 1
+	number_of_sensors_Index    = 2
+	alert_thresholds_min_Index = 3
+	alert_thresholds_max_Index = 4
+	sampling_interval_Index    = 5
 
 	sensorReadingSubject = "sensor.reading"
 )
@@ -98,7 +98,7 @@ func generateReadingPayload(s domain.Sensor) []byte {
 	}
 
 	rand.Seed(time.Now().UnixNano())
-	if rand.Float64() < 0.6 {
+	if rand.Float64() < 0.2 {
 		if rand.Float64() < 0.5 {
 			value += s.AlertThresholds.Max
 		} else {
@@ -106,7 +106,7 @@ func generateReadingPayload(s domain.Sensor) []byte {
 		}
 	}
 
-	if rand.Float64() < 0.3 {
+	if rand.Float64() < 0.1 {
 		msg := "sensor read error"
 		errStr = &msg
 		value = 0
@@ -149,28 +149,28 @@ func PrepareSensorsFromCSV() ([]domain.Sensor, error) {
 			continue
 		}
 
-		sensorNumber, err := strconv.Atoi(strings.TrimSpace(record[numberIndex]))
+		sensorNumber, err := strconv.Atoi(strings.TrimSpace(record[number_of_sensors_Index]))
 		if err != nil {
 			log.Fatalf("error parsing config sensor number: %v", err)
 		}
-		sensorMin, err := strconv.ParseFloat(strings.TrimSpace(record[minIndex]), 64)
+		sensorMin, err := strconv.ParseFloat(strings.TrimSpace(record[alert_thresholds_min_Index]), 64)
 		if err != nil {
 			log.Fatalf("error parsing config sensor sensorMIn: %v", err)
 		}
-		sensorMax, err := strconv.ParseFloat(strings.TrimSpace(record[maxIndex]), 64)
+		sensorMax, err := strconv.ParseFloat(strings.TrimSpace(record[alert_thresholds_max_Index]), 64)
 		if err != nil {
 			log.Fatalf("error parsing config sensor max: %v", err)
 		}
-		sensorSampling, err := time.ParseDuration(strings.TrimSpace(record[samplingIndex]))
+		sensorSampling, err := time.ParseDuration(strings.TrimSpace(record[sampling_interval_Index]))
 		if err != nil {
 			log.Fatalf("error parsing config sensor sampling: %v", err)
 		}
 		for i := 0; i < sensorNumber; i++ {
 			sensorList = append(sensorList, domain.Sensor{
 				ID:               uuid.New(),
-				Name:             fmt.Sprintf("%s sensor %d%d", record[typeIndex], index, i),
-				Type:             domain.SensorType(record[typeIndex]),
-				Unit:             record[unitIndex],
+				Name:             fmt.Sprintf("%s sensor %d%d", record[type_Index], index, i),
+				Type:             domain.SensorType(record[type_Index]),
+				Unit:             record[unit_Index],
 				SamplingInterval: sensorSampling,
 				AlertThresholds: domain.Threshold{
 					Min: sensorMin,
