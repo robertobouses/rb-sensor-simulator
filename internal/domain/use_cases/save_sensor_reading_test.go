@@ -112,3 +112,61 @@ func TestSaveSensorReading_UpdateSensorError(t *testing.T) {
 	assert.Error(t, err)
 	assert.Contains(t, err.Error(), "failed to update sensor")
 }
+
+func TestSaveSensorReading_WithReadingError(t *testing.T) {
+	id := uuid.New()
+	mockSensor := &domain.Sensor{
+		ID:              id,
+		AlertThresholds: domain.Threshold{Min: 10, Max: 100},
+		Status:          domain.Active,
+	}
+	mockRepo := &MockRepo{
+		SensorToReturn: mockSensor,
+	}
+	app := use_cases.NewApp(mockRepo)
+
+	errMsg := "sensor error"
+	reading := &domain.SensorReading{
+		SensorID: id,
+		Value:    50,
+		Error:    &errMsg,
+	}
+	err := app.SaveSensorReading(reading)
+	assert.NoError(t, err)
+}
+
+func TestSaveSensorReading_ResolveAlert(t *testing.T) {
+	id := uuid.New()
+	mockSensor := &domain.Sensor{
+		ID:              id,
+		AlertThresholds: domain.Threshold{Min: 10, Max: 100},
+		Status:          domain.Warning,
+	}
+	mockRepo := &MockRepo{
+		SensorToReturn: mockSensor,
+	}
+	app := use_cases.NewApp(mockRepo)
+
+	reading := &domain.SensorReading{SensorID: id, Value: 50}
+	err := app.SaveSensorReading(reading)
+	assert.NoError(t, err)
+}
+
+func TestSaveSensorReading_ResolveAlertError(t *testing.T) {
+	id := uuid.New()
+	mockSensor := &domain.Sensor{
+		ID:              id,
+		AlertThresholds: domain.Threshold{Min: 10, Max: 100},
+		Status:          domain.Warning,
+	}
+	mockRepo := &MockRepo{
+		SensorToReturn:           mockSensor,
+		UpdateAlertResolvedError: errors.New("unexpected error"),
+	}
+	app := use_cases.NewApp(mockRepo)
+
+	reading := &domain.SensorReading{SensorID: id, Value: 50}
+	err := app.SaveSensorReading(reading)
+	assert.Error(t, err)
+	assert.Contains(t, err.Error(), "failed to resolve alert")
+}
