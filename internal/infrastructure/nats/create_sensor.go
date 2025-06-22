@@ -18,6 +18,7 @@ type CreateSensorRequest struct {
 	SamplingInterval time.Duration `json:"sampling_interval"`
 	AlertThresholds  Threshold     `json:"alert_thresholds"`
 	Unit             string        `json:"unit"`
+	Status           string        `json:"status"`
 }
 type Threshold struct {
 	Min float64 `json:"min"`
@@ -33,8 +34,14 @@ func (h Handler) CreateSensor(req micro.Request) {
 		_ = req.Respond([]byte(`{"error":"invalid request format"}`))
 		return
 	}
+	sensorID, err := uuid.Parse(input.ID)
+	if err != nil {
+		log.Printf("invalid sensor id: %v\n", err)
+		_ = req.Respond([]byte(`{"error":"invalid request format"}`))
+		return
+	}
 	sensor := domain.Sensor{
-		ID:               uuid.New(),
+		ID:               sensorID,
 		Name:             input.Name,
 		Type:             domain.SensorType(input.Type),
 		SamplingInterval: input.SamplingInterval,
@@ -42,10 +49,11 @@ func (h Handler) CreateSensor(req micro.Request) {
 			Min: input.AlertThresholds.Min,
 			Max: input.AlertThresholds.Max,
 		},
-		Unit: input.Unit,
+		Unit:   input.Unit,
+		Status: domain.SensorStatus(input.Status),
 	}
 
-	if err := h.app.SaveSensor(&sensor); err != nil {
+	if err := h.app.CreateSensor(&sensor); err != nil {
 		log.Printf("error saving sensor: %v\n", err)
 		_ = req.Respond([]byte(fmt.Sprintf(`{"error":"%s"}`, err.Error())))
 		return

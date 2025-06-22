@@ -5,5 +5,6 @@ SELECT
     sampling_interval,
     alert_threshold_min,
     alert_threshold_max,
-    unit
+    unit,
+    status
 FROM sen.sensor WHERE id = $1

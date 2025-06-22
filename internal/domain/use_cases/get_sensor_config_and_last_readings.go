@@ -18,6 +18,7 @@ func (a AppService) GetSensorConfigAndLastReadings(sensorID uuid.UUID, numberOfR
 		SamplingInterval: sensor.SamplingInterval,
 		AlertThresholds:  sensor.AlertThresholds,
 		Unit:             sensor.Unit,
+		Status:           sensor.Status,
 		LastReading:      sensor.LastReading,
 	}, nil
 }

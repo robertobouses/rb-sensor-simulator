@@ -6,8 +6,8 @@ import (
 )
 
 type App interface {
-	SaveSensor(sensor *domain.Sensor) error
-	SaveSensorReading(reading domain.SensorReading) error
+	CreateSensor(sensor *domain.Sensor) error
+	SaveSensorReading(reading *domain.SensorReading) error
 	UpdateSensorConfig(sensor domain.Sensor) error
 	GetSensorConfigAndLastReadings(sensorID uuid.UUID, numberOfReadings int) (*domain.Sensor, error)
 }

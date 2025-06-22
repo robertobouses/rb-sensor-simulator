@@ -33,11 +33,12 @@ func (h Handler) UpdateSensorConfig(req micro.Request) {
 			Min: input.AlertThresholds.Min,
 			Max: input.AlertThresholds.Max,
 		},
-		Unit: input.Unit,
+		Unit:   input.Unit,
+		Status: domain.SensorStatus(input.Status),
 	}
 
 	if err := h.app.UpdateSensorConfig(sensor); err != nil {
-		log.Printf("error updating sensor config: %v\n", err)
+		log.Printf("error updating sensor config on UpdateSensorConfig: %v\n", err)
 		_ = req.Respond([]byte(fmt.Sprintf(`{"error":"%s"}`, err.Error())))
 		return
 	}

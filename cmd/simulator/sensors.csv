@@ -1,0 +1,2 @@
+type, unit, number, min, max, sampling
+temperature, C, 1, 0, 100, 5s
