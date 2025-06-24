@@ -28,7 +28,7 @@ func RunServer(nc *nats.Conn, app App) error {
 	if err := sensorConfigGroup.AddEndpoint("update", micro.HandlerFunc(handler.UpdateSensorConfig)); err != nil {
 		return err
 	}
-	if err := sensorConfigGroup.AddEndpoint("get", micro.HandlerFunc(handler.UpdateSensorConfig)); err != nil {
+	if err := sensorConfigGroup.AddEndpoint("get", micro.HandlerFunc(handler.GetSensorConfigAndLastReadings)); err != nil {
 		return err
 	}
 
